@@ -83,8 +83,8 @@ class AbstractRepo:
             "eventDatetime": datetime.datetime.now(ZoneInfo("Zulu")).replace(microsecond=0).isoformat()
         }
     
-    def get_sbom(self, source_file_path: str) -> dict:
-        return Syft.get_sbom(source_file_path)
+    def get_sbom(self, source_file_path: str, source_name: str = None, source_version: str = None) -> dict:
+        return Syft.get_sbom(source_file_path, source_name=source_name, source_version=source_version)
     
     def __enter__(self):
         return self

@@ -59,6 +59,8 @@ class GitRepo(AbstractRepo):
         return super().__enter__()
     
     def __exit__(self, exc_type, exc_value, traceback):
+        if hasattr(self, '_repo') and self._repo:
+            self._repo.close()
         if self.tmpdir:
             self.tmpdir.cleanup()
             self.tmpdir = None
@@ -226,7 +228,7 @@ class GitRepo(AbstractRepo):
             with open(full_path, "w") as f:
                 f.write(self.get_file_at(repo_build_file.build_file_rel_path, commit))
 
-            return super().get_sbom(full_path)
+            return super().get_sbom(full_path, source_name=repo_build_file.project_name)
         
     def checkout(self, head):
         self._repo.head.reference = head
